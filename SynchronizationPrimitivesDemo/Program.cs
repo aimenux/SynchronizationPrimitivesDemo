@@ -27,13 +27,15 @@ namespace SynchronizationPrimitivesDemo
 
             var services = new ServiceCollection();
             services.AddSingleton<IPrinter, Printer>();
-            //services.AddTransient<IExample, Example1>();
-            //services.AddTransient<IExample, Example2>();
-            //services.AddTransient<IExample, Example3>();
-            //services.AddTransient<IExample, Example4>();
-            //services.AddTransient<IExample, Example5>();
-            //services.AddTransient<IExample, Example6>();
+            services.AddTransient<IExample, Example1>();
+            services.AddTransient<IExample, Example2>();
+            services.AddTransient<IExample, Example3>();
+            services.AddTransient<IExample, Example4>();
+            services.AddTransient<IExample, Example5>();
+            services.AddTransient<IExample, Example6>();
             services.AddTransient<IExample, Example7>();
+            services.AddTransient<IExample, Example8>();
+            services.AddTransient<IExample, Example9>();
 
             var serviceProvider = services.BuildServiceProvider();
             foreach (var example in serviceProvider.GetServices<IExample>())

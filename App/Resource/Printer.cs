@@ -1,6 +1,7 @@
 ﻿using System;
+using App.Exceptions;
 
-namespace SynchronizationPrimitivesDemo.Resource
+namespace App.Resource
 {
     public class Printer : IPrinter
     {
@@ -17,8 +18,7 @@ namespace SynchronizationPrimitivesDemo.Resource
         {
             if (State != State.Ready)
             {
-                ConsoleColor.Red.WriteLine("An error has occured due to busy state");
-                return;
+                throw PrinterException.PrinterIsBusy(this);
             }
 
             State = State.Busy;

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace SynchronizationPrimitivesDemo
+namespace App
 {
     public static class Extensions
     {

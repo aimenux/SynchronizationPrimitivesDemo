@@ -1,7 +1,8 @@
 ﻿using System.Threading;
-using SynchronizationPrimitivesDemo.Resource;
+using System.Threading.Tasks;
+using App.Resource;
 
-namespace SynchronizationPrimitivesDemo.Examples
+namespace App.Examples
 {
     public abstract class AbstractExample : IExample
     {
@@ -23,6 +24,12 @@ namespace SynchronizationPrimitivesDemo.Examples
             color.WriteLine($"\nThread [Name={ThreadName}] is entering the critical section");
             Printer.Print(color, $"Thread [Name={ThreadName}] is using the printer [Id={printerId}]");
             color.WriteLine($"Thread [Name={ThreadName}] is exiting the critical section");
+        }
+
+        public virtual Task UsePrinterAsync()
+        {
+            UsePrinter();
+            return Task.CompletedTask;
         }
     }
 }

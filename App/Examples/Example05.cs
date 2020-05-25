@@ -1,13 +1,13 @@
 ﻿using System.Threading;
-using SynchronizationPrimitivesDemo.Resource;
+using App.Resource;
 
-namespace SynchronizationPrimitivesDemo.Examples
+namespace App.Examples
 {
-    public class Example5 : AbstractExample
+    public class Example05 : AbstractExample
     {
         private static readonly Semaphore Semaphore = new Semaphore(1,1);
 
-        public Example5(IPrinter printer) : base(printer)
+        public Example05(IPrinter printer) : base(printer)
         {
         }
 

@@ -1,13 +1,13 @@
 ﻿using System.Threading;
-using SynchronizationPrimitivesDemo.Resource;
+using App.Resource;
 
-namespace SynchronizationPrimitivesDemo.Examples
+namespace App.Examples
 {
-    public class Example4 : AbstractExample
+    public class Example04 : AbstractExample
     {
         private static readonly Mutex Mutex = new Mutex();
 
-        public Example4(IPrinter printer) : base(printer)
+        public Example04(IPrinter printer) : base(printer)
         {
         }
 

@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using App.Examples;
+using App.Resource;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SynchronizationPrimitivesDemo.Examples;
-using SynchronizationPrimitivesDemo.Resource;
 
-namespace SynchronizationPrimitivesDemo
+namespace App
 {
     public static class Program
     {
@@ -27,15 +27,15 @@ namespace SynchronizationPrimitivesDemo
 
             var services = new ServiceCollection();
             services.AddSingleton<IPrinter, Printer>();
-            services.AddTransient<IExample, Example1>();
-            services.AddTransient<IExample, Example2>();
-            services.AddTransient<IExample, Example3>();
-            services.AddTransient<IExample, Example4>();
-            services.AddTransient<IExample, Example5>();
-            services.AddTransient<IExample, Example6>();
-            services.AddTransient<IExample, Example7>();
-            services.AddTransient<IExample, Example8>();
-            services.AddTransient<IExample, Example9>();
+            services.AddTransient<IExample, Example01>();
+            services.AddTransient<IExample, Example02>();
+            services.AddTransient<IExample, Example03>();
+            services.AddTransient<IExample, Example04>();
+            services.AddTransient<IExample, Example05>();
+            services.AddTransient<IExample, Example06>();
+            services.AddTransient<IExample, Example07>();
+            services.AddTransient<IExample, Example08>();
+            services.AddTransient<IExample, Example09>();
 
             var serviceProvider = services.BuildServiceProvider();
             foreach (var example in serviceProvider.GetServices<IExample>())

@@ -1,13 +1,13 @@
 ﻿using System.Threading;
-using SynchronizationPrimitivesDemo.Resource;
+using App.Resource;
 
-namespace SynchronizationPrimitivesDemo.Examples
+namespace App.Examples
 {
-    public class Example9 : AbstractExample
+    public class Example09 : AbstractExample
     {
         private static readonly ReaderWriterLockSlim ReaderWriterLockSlim = new ReaderWriterLockSlim();
 
-        public Example9(IPrinter printer) : base(printer)
+        public Example09(IPrinter printer) : base(printer)
         {
         }
 

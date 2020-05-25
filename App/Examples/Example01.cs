@@ -1,12 +1,12 @@
-﻿using SynchronizationPrimitivesDemo.Resource;
+﻿using App.Resource;
 
-namespace SynchronizationPrimitivesDemo.Examples
+namespace App.Examples
 {
-    public class Example1 : AbstractExample
+    public class Example01 : AbstractExample
     {
         private static readonly object Locker = new object();
 
-        public Example1(IPrinter printer) : base(printer)
+        public Example01(IPrinter printer) : base(printer)
         {
         }
 

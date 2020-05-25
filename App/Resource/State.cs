@@ -1,4 +1,4 @@
-﻿namespace SynchronizationPrimitivesDemo.Resource
+﻿namespace App.Resource
 {
     public enum State
     {

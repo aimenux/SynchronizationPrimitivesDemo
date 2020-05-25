@@ -1,13 +1,13 @@
 ﻿using System.Threading;
-using SynchronizationPrimitivesDemo.Resource;
+using App.Resource;
 
-namespace SynchronizationPrimitivesDemo.Examples
+namespace App.Examples
 {
-    public class Example2 : AbstractExample
+    public class Example02 : AbstractExample
     {
         private static readonly object Locker = new object();
 
-        public Example2(IPrinter printer) : base(printer)
+        public Example02(IPrinter printer) : base(printer)
         {
         }
 

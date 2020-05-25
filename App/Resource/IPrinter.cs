@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SynchronizationPrimitivesDemo.Resource
+namespace App.Resource
 {
     public interface IPrinter
     {

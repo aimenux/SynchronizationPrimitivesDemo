@@ -1,13 +1,13 @@
 ﻿using System.Threading;
-using SynchronizationPrimitivesDemo.Resource;
+using App.Resource;
 
-namespace SynchronizationPrimitivesDemo.Examples
+namespace App.Examples
 {
-    public class Example7 : AbstractExample
+    public class Example07 : AbstractExample
     {
         private static SpinLock _spinLock = new SpinLock(true);
 
-        public Example7(IPrinter printer) : base(printer)
+        public Example07(IPrinter printer) : base(printer)
         {
         }
 

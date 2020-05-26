@@ -26,6 +26,12 @@ namespace App
             return RandomEnumValue<ConsoleColor>();
         }
 
+        public static TimeSpan RandomDelay()
+        {
+            var milliseconds = Random.Next(100, 500);
+            return TimeSpan.FromMilliseconds(milliseconds);
+        }
+
         private static T RandomEnumValue<T>()
         {
             var values = Enum.GetValues(typeof(T));

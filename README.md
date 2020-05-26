@@ -13,5 +13,8 @@ Demo for synchronization primitives used in sync or async code
 > - spin lock
 > - reader writer lock
 > - reader writer lock slim
+> - async lock
+> - async semaphore
+> - async reader writer lock
 
 **`Tools`** : vs19, net core 3.1

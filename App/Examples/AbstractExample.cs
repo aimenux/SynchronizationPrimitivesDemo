@@ -29,7 +29,7 @@ namespace App.Examples
         public virtual Task UsePrinterAsync()
         {
             UsePrinter();
-            return Task.CompletedTask;
+            return Task.Delay(Extensions.RandomDelay());
         }
     }
 }

@@ -13,9 +13,9 @@ namespace UnitTests
 {
     public static class GenericTestHelper
     {
-        private const int MaxConcurrency = 10;
+        public const int MaxConcurrency = 10;
 
-        public static void RunWithParallelActions<T>() where T : IExample
+        public static void PassWithParallelActions<T>() where T : IExample
         {
             try
             {
@@ -27,11 +27,11 @@ namespace UnitTests
             }
             catch (Exception ex)
             {
-                AssertConcurrencyIsFailed(ex);
+                FailWhenConcurrencyException(ex);
             }
         }
 
-        public static void RunWithParallelTasks<T>() where T : IExample
+        public static void PassWithParallelTasks<T>() where T : IExample
         {
             try
             {
@@ -46,11 +46,28 @@ namespace UnitTests
             }
             catch (Exception ex)
             {
-                AssertConcurrencyIsFailed(ex);
+                FailWhenConcurrencyException(ex);
             }
         }
 
-        public static void RunWithParallelThreads<T>() where T : IExample
+        public static async Task PassWithParallelTasksAsync<T>() where T : IExample
+        {
+            try
+            {
+                var example = CreateExample<T>();
+                var tasks = Enumerable.Range(1, MaxConcurrency)
+                    .Select(x => Task.Run(async() => await example.UsePrinterAsync()))
+                    .ToArray();
+
+                await Task.WhenAll(tasks);
+            }
+            catch (Exception ex)
+            {
+                FailWhenConcurrencyException(ex);
+            }
+        }
+
+        public static void PassWithParallelThreads<T>() where T : IExample
         {
             var example = CreateExample<T>();
             var exceptions = new ConcurrentQueue<Exception>();
@@ -77,11 +94,85 @@ namespace UnitTests
             exceptions.Should().BeEmpty();
         }
 
-        public static void AssertConcurrencyIsFailed(Exception ex)
+        public static void FailWithParallelActions<T>() where T : IExample
+        {
+            try
+            {
+                var example = CreateExample<T>();
+                Parallel.For(0, MaxConcurrency, index =>
+                {
+                    example.UsePrinter();
+                });
+
+                Assert.Fail("Concurrency exception not thrown");
+            }
+            catch (Exception ex)
+            {
+                PassWhenConcurrencyException(ex);
+            }
+        }
+
+        public static void FailWithParallelTasks<T>() where T : IExample
+        {
+            try
+            {
+                var example = CreateExample<T>();
+                var tasks = Enumerable.Range(1, MaxConcurrency)
+                    .Select(x => new Task(example.UsePrinter))
+                    .ToArray();
+
+                Parallel.ForEach(tasks, task => task.Start());
+
+                Task.WaitAll(tasks);
+
+                Assert.Fail("Concurrency exception not thrown");
+            }
+            catch (Exception ex)
+            {
+                PassWhenConcurrencyException(ex);
+            }
+        }
+
+        public static void FailWithParallelThreads<T>() where T : IExample
+        {
+            var example = CreateExample<T>();
+            var exceptions = new ConcurrentQueue<Exception>();
+            var threads = Enumerable.Range(1, MaxConcurrency)
+                .Select(x => new Thread(() =>
+                {
+                    try
+                    {
+                        example.UsePrinter();
+                    }
+                    catch (Exception ex)
+                    {
+                        exceptions.Enqueue(ex);
+                    }
+                })).ToArray();
+
+            Parallel.ForEach(threads, thread => thread.Start());
+
+            foreach (var thread in threads)
+            {
+                thread.Join();
+            }
+
+            exceptions.Should().NotBeEmpty();
+            exceptions.Should().AllBeOfType<PrinterException>();
+        }
+
+        public static void FailWhenConcurrencyException(Exception ex)
         {
             var exception = ex?.InnerException ?? ex;
             exception.Should().BeOfType<PrinterException>();
-            Assert.Fail($"Concurrency is failed ({ex?.Message})");
+            Assert.Fail($"Concurrency exception ({ex?.Message})");
+        }
+
+        public static void PassWhenConcurrencyException(Exception ex)
+        {
+            var exception = ex?.InnerException ?? ex;
+            exception.Should().BeOfType<PrinterException>();
+            Assert.Pass($"Concurrency exception ({ex?.Message})");
         }
 
         private static T CreateExample<T>() where T : IExample

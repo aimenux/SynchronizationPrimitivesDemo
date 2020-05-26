@@ -16,9 +16,15 @@ namespace App.Examples
 
         public override async Task UsePrinterAsync()
         {
-            await SemaphoreSlim.WaitAsync();
-            await base.UsePrinterAsync();
-            SemaphoreSlim.Release();
+            try
+            {
+                await SemaphoreSlim.WaitAsync();
+                await base.UsePrinterAsync();
+            }
+            finally
+            {
+                SemaphoreSlim.Release();
+            }
         }
     }
 }

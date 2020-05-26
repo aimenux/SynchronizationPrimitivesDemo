@@ -15,9 +15,15 @@ namespace App.Examples
 
         public override void UsePrinter()
         {
-            Semaphore.WaitOne();
-            base.UsePrinter();
-            Semaphore.Release();
+            try
+            {
+                Semaphore.WaitOne();
+                base.UsePrinter();
+            }
+            finally
+            {
+                Semaphore.Release();
+            }
         }
     }
 }

@@ -37,7 +37,7 @@ namespace UnitTests
             {
                 var example = CreateExample<T>();
                 var tasks = Enumerable.Range(1, MaxConcurrency)
-                    .Select(x => new Task(example.UsePrinter))
+                    .Select(x => new Task(() => Task.Run(example.UsePrinter)))
                     .ToArray();
 
                 Parallel.ForEach(tasks, task => task.Start());
@@ -118,8 +118,12 @@ namespace UnitTests
             {
                 var example = CreateExample<T>();
                 var tasks = Enumerable.Range(1, MaxConcurrency)
-                    .Select(x => new Task(example.UsePrinter))
-                    .ToArray();
+                    .Select(x =>
+                    {
+                        return x % 2 == 0 
+                            ? new Task(example.UsePrinter) 
+                            : new Task(() => Task.Run(example.UsePrinter));
+                    }).ToArray();
 
                 Parallel.ForEach(tasks, task => task.Start());
 

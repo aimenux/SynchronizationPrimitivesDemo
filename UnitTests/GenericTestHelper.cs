@@ -31,45 +31,6 @@ namespace UnitTests
             }
         }
 
-        public static void PassWithParallelTasks<T>() where T : IExample
-        {
-            var example = CreateExample<T>();
-            var exceptions = new ConcurrentQueue<Exception>();
-            var tasks = Enumerable.Range(1, MaxConcurrency)
-                .Select(x => Task.Run(() =>
-                {
-                    try
-                    {
-                        example.UsePrinter();
-                    }
-                    catch (Exception ex)
-                    {
-                        exceptions.Enqueue(ex);
-                    }
-                })).ToArray();
-
-            Task.WaitAll(tasks);
-
-            exceptions.Should().BeEmpty();
-        }
-
-        public static async Task PassWithParallelTasksAsync<T>() where T : IExample
-        {
-            try
-            {
-                var example = CreateExample<T>();
-                var tasks = Enumerable.Range(1, MaxConcurrency)
-                    .Select(x => Task.Run(async() => await example.UsePrinterAsync()))
-                    .ToArray();
-
-                await Task.WhenAll(tasks);
-            }
-            catch (Exception ex)
-            {
-                FailWhenConcurrencyException(ex);
-            }
-        }
-
         public static void PassWithParallelThreads<T>() where T : IExample
         {
             var example = CreateExample<T>();
@@ -97,6 +58,23 @@ namespace UnitTests
             exceptions.Should().BeEmpty();
         }
 
+        public static async Task PassWithParallelTasksAsync<T>() where T : IExample
+        {
+            try
+            {
+                var example = CreateExample<T>();
+                var tasks = Enumerable.Range(1, MaxConcurrency)
+                    .Select(x => Task.Run(async() => await example.UsePrinterAsync()))
+                    .ToArray();
+
+                await Task.WhenAll(tasks);
+            }
+            catch (Exception ex)
+            {
+                FailWhenConcurrencyException(ex);
+            }
+        }
+
         public static void FailWithParallelActions<T>() where T : IExample
         {
             try
@@ -113,29 +91,6 @@ namespace UnitTests
             {
                 PassWhenConcurrencyException(ex);
             }
-        }
-
-        public static void FailWithParallelTasks<T>() where T : IExample
-        {
-            var example = CreateExample<T>();
-            var exceptions = new ConcurrentQueue<Exception>();
-            var tasks = Enumerable.Range(1, MaxConcurrency)
-                .Select(x => Task.Run(() =>
-                {
-                    try
-                    {
-                        example.UsePrinter();
-                    }
-                    catch (Exception ex)
-                    {
-                        exceptions.Enqueue(ex);
-                    }
-                })).ToArray();
-
-            Task.WaitAll(tasks);
-
-            exceptions.Should().NotBeEmpty();
-            exceptions.Should().AllBeOfType<PrinterException>();
         }
 
         public static void FailWithParallelThreads<T>() where T : IExample

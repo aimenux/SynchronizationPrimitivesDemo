@@ -28,7 +28,7 @@ namespace App
 
         public static TimeSpan RandomDelay()
         {
-            var milliseconds = Random.Next(100, 500);
+            var milliseconds = Random.Next(10, 50);
             return TimeSpan.FromMilliseconds(milliseconds);
         }
 

@@ -13,7 +13,7 @@ namespace UnitTests
 {
     public static class GenericTestHelper
     {
-        public const int MaxConcurrency = 10;
+        public const int MaxConcurrency = 20;
 
         public static void PassWithParallelActions<T>() where T : IExample
         {

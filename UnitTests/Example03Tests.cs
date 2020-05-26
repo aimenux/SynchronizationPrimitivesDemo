@@ -16,5 +16,11 @@ namespace UnitTests
         {
             GenericTestHelper.PassWithParallelThreads<Example03>();
         }
+
+        [Test]
+        public void Should_Not_Throw_Printer_Exception_When_Multiple_Clients_Try_To_Use_Printer_V3()
+        {
+            GenericTestHelper.PassWithParallelTasks<Example03>();
+        }
     }
 }
